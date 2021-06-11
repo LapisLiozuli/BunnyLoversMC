@@ -1,9 +1,9 @@
-# Fabric Example Mod
+# Bunny Lovers
 
-## Setup
+## Primer
 
-For setup instructions please see the [fabric wiki page](https://fabricmc.net/wiki/tutorial:setup) that relates to the IDE that you are using.
+Rabbits are slightly too vulnerable in Minecraft. This mod aims to make them a bit safer from harm, farming and exploitation.
 
 ## License
 
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+This mod is available under the MIT License.
