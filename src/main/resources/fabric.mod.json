@@ -1,37 +1,39 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
-  "version": "${version}",
+  "id": "bunnyloversmc",
+  "version": "0.0.1+1.16.5",
 
-  "name": "Example Mod",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "Bunny Lovers MC",
+  "description": "This mod aims to make rabbits a bit safer from harm, farming and exploitation.",
   "authors": [
-    "Me!"
+    "LapisLiozuli"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "homepage": "",
+    "sources": "https://github.com/LapisLiozuli/BunnyLoversMC"
   },
 
-  "license": "CC0-1.0",
-  "icon": "assets/modid/icon.png",
+  "license": "MIT",
+  "icon": "",
 
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.fabricmc.example.ExampleMod"
+      "com.lapisliozuli.bunnyloversmc.BunnyLovers"
+    ],
+    "client": [
+      "com.lapisliozuli.bunnyloversmc.BunnyLoversClient"
     ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "bunnyloversmc.mixins.json"
   ],
 
   "depends": {
-    "fabricloader": ">=0.7.4",
+    "fabricloader": "*",
     "fabric": "*",
-    "minecraft": "1.16.x"
+    "minecraft": "*"
   },
   "suggests": {
-    "another-mod": "*"
   }
 }
