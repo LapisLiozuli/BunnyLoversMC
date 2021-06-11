@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "bunnyloversmc:tanned_leather"
+    }
+  ],
+  "result": {
+    "item": "bunnyloversmc:leather_strip",
+    "count": 4
+  }
+}
