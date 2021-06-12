@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(RabbitEntity.class)
 public class NoFallDamageMixin {
-	public boolean bunnyloversmc$handleFallDamage(float fallDistance, float damageMultiplier) {
+	public boolean handleFallDamage(float fallDistance, float damageMultiplier) {
 		return false;
 	}
 }
