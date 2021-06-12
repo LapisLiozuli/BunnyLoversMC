@@ -22,13 +22,21 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
+import java.util.logging.Logger;
+
 // This actually targets a static inner class within the RabbitEntity class.
 @Mixin(targets = "net.minecraft.entity.passive.RabbitEntity$EatCarrotCropGoal")
 public class RabbitEntityMixin {
+	Logger logger = Logger.getLogger(RabbitEntityMixin.class.getName());
 	@Shadow
 	@Final
 	private RabbitEntity rabbit;
-	protected BlockPos targetPos;
+//	@Shadow
+//	protected BlockPos targetPos;
+//	@Shadow
+//	protected BlockPos getTargetPos() {
+//		return null;
+//	}
 	public int berryDropTime;
 
 
@@ -41,13 +49,13 @@ public class RabbitEntityMixin {
 
 	// THIS THING HOKSDNAKSNITI IT PROVES THAT THE INJECFT TRULY LTLU YL WORKS IN INNER CLASSSSASEASESE.
 	// THEN WHY DOESN'T IT IN THE METHOD THAT I'M ACTUALLY TARGETING????
-	@Inject(
-			method = "shouldContinue()Z",
-			at = @At(value="TAIL")
-	)
-	public void shouldContinue(CallbackInfoReturnable<Boolean> cir) {
-		rabbit.playSound(SoundEvents.ENTITY_CHICKEN_EGG, 1.0F, 0.2F + 1.0F);
-		rabbit.dropItem(BunnyItems.BUNNY_BERRIES);	}
+//	@Inject(
+//			method = "shouldContinue()Z",
+//			at = @At(value="TAIL")
+//	)
+//	public void shouldContinue(CallbackInfoReturnable<Boolean> cir) {
+//		rabbit.playSound(SoundEvents.ENTITY_CHICKEN_EGG, 1.0F, 0.2F + 1.0F);
+//		rabbit.dropItem(BunnyItems.BUNNY_BERRIES);	}
 
 
 	@Inject(
@@ -56,20 +64,24 @@ public class RabbitEntityMixin {
 //			at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/World;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/BlockState;"),
 //			at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;setBlockState(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;I)Z", ordinal = 1),
 			// This should work but now every single rabbit poops itself at the thought of eating a carrot.
-			at = @At(value = "INVOKE", target = "Lnet/minecraft/block/Block;getRawIdFromState(Lnet/minecraft/block/BlockState;)I", shift = At.Shift.BY, by = 1),
+//			at = @At(value = "INVOKE", target = "Lnet/minecraft/block/Block;getRawIdFromState(Lnet/minecraft/block/BlockState;)I", shift = At.Shift.BY, by = 1),
+			at = @At(value = "INVOKE", target = "Lnet/minecraft/block/Block;getRawIdFromState(Lnet/minecraft/block/BlockState;)I", shift = At.Shift.AFTER),
+//			at = @At(value = "INVOKE", target = "Lnet/minecraft/block/Block;getRawIdFromState(Lnet/minecraft/block/BlockState;)I"),
 //			at = @At(value = "INVOKE", target = "Lnet/minecraft/block/Block;getRawIdFromState(Lnet/minecraft/block/BlockState;)I"),
 //			at = @At(value = "INVOKE", target = "Lnet/minecraft/world/WorldAccess;syncWorldEvent(ILnet/minecraft/util/math/BlockPos;I)V"),
 //			at = @At(value = "FIELD", target = "Lnet/minecraft/entity/passive/RabbitEntity;moreCarrotTicks:I"),
 //			at = @At(value = "FIELD", target = "Lnet/minecraft/entity/passive/RabbitEntity$EatCarrotCropGoal;hasTarget:Z"),
 //			at = @At(value = "FIELD", target = "Lnet/minecraft/entity/ai/goal/MoveToTargetPosGoal;cooldown:I"),
-			locals = LocalCapture.PRINT
+			locals = LocalCapture.CAPTURE_FAILSOFT
 	)
-	public void bunnyloversmc$tick(CallbackInfo ci) {
-		World world = this.rabbit.world;
-		BlockPos blockPos = this.targetPos.up();
-		BlockState blockState = world.getBlockState(blockPos);
-		Block block = blockState.getBlock();
-		Integer integer = (Integer)blockState.get(CarrotsBlock.AGE);
+//	public void bunnyloversmc$tick(CallbackInfo ci) {
+	public void bunnyloversmc$tick(CallbackInfo ci, World world, BlockPos blockPos, BlockState blockState, Block block, Integer integer) {
+//		World world = this.rabbit.world;
+//		BlockPos blockPos = this.targetPos.up();
+//		BlockState blockState = world.getBlockState(blockPos);
+//		Block block = blockState.getBlock();
+//		Integer integer = (Integer)blockState.get(CarrotsBlock.AGE);
+		logger.config("This is a log message.");
 		rabbit.playSound(SoundEvents.ENTITY_CHICKEN_EGG, 1.0F, 0.2F + 1.0F);
 		rabbit.dropItem(BunnyItems.BUNNY_BERRIES);
 	}
