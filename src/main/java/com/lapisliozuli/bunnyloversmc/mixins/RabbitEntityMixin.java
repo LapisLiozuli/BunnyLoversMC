@@ -1,19 +1,25 @@
 package com.lapisliozuli.bunnyloversmc.mixins;
 
 import com.lapisliozuli.bunnyloversmc.items.BunnyItems;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.CarrotsBlock;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.RabbitEntity;
 import net.minecraft.item.Items;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 // This actually targets a static inner class within the RabbitEntity class.
@@ -22,6 +28,7 @@ public class RabbitEntityMixin {
 	@Shadow
 	@Final
 	private RabbitEntity rabbit;
+	protected BlockPos targetPos;
 	public int berryDropTime;
 
 
@@ -32,32 +39,39 @@ public class RabbitEntityMixin {
 	}
 
 
-//	@Inject(method = "tick",
-	@Inject(method = "Lnet/minecraft/entity/passive/RabbitEntity$EatCarrotCropGoal;tick()V",
+	// THIS THING HOKSDNAKSNITI IT PROVES THAT THE INJECFT TRULY LTLU YL WORKS IN INNER CLASSSSASEASESE.
+	// THEN WHY DOESN'T IT IN THE METHOD THAT I'M ACTUALLY TARGETING????
+	@Inject(
+			method = "shouldContinue()Z",
+			at = @At(value="TAIL")
+	)
+	public void shouldContinue(CallbackInfoReturnable<Boolean> cir) {
+		rabbit.playSound(SoundEvents.ENTITY_CHICKEN_EGG, 1.0F, 0.2F + 1.0F);
+		rabbit.dropItem(BunnyItems.BUNNY_BERRIES);	}
+
+
+	@Inject(
+			method = "Lnet/minecraft/entity/passive/RabbitEntity$EatCarrotCropGoal;tick()V",
 //			at = @At(value="TAIL"),
-//			at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/mob/MobEntity;getLookControl()Lnet/minecraft/entity/ai/control/LookControl;"),
-//			at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/ai/goal/MoveToTargetPosGoal;hasReached()Z"),
-			// These methods lie within the if clause.
-//			at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/state/State;get(Lnet/minecraft/state/property/Property;)Ljava/lang/Comparable;"),
+//			at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/World;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/BlockState;"),
+//			at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;setBlockState(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;I)Z", ordinal = 1),
+			// This should work but now every single rabbit poops itself at the thought of eating a carrot.
+			at = @At(value = "INVOKE", target = "Lnet/minecraft/block/Block;getRawIdFromState(Lnet/minecraft/block/BlockState;)I", shift = At.Shift.BY, by = 1),
+//			at = @At(value = "INVOKE", target = "Lnet/minecraft/block/Block;getRawIdFromState(Lnet/minecraft/block/BlockState;)I"),
 //			at = @At(value = "INVOKE", target = "Lnet/minecraft/world/WorldAccess;syncWorldEvent(ILnet/minecraft/util/math/BlockPos;I)V"),
-//			at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/entity/passive/RabbitEntity;method_6613(Lnet/minecraft/entity/passive/RabbitEntity;I)I"),
-//			at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;setBlockState(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;I)Z"),
-			// IntelliJ accepts the path bytecode but then still raises InvocationTargetException.
-			// Maybe failed because private access.
-			at = @At(value = "FIELD", target = "Lnet/minecraft/entity/passive/RabbitEntity;moreCarrotTicks:I", args = { "log=true" }, opcode = 1),
-//			at = @At(value = "INVOKE",
-//					target = "Lnet/minecraft/world/World;setBlockState(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;I)Z",
-//					ordinal = 1),
+//			at = @At(value = "FIELD", target = "Lnet/minecraft/entity/passive/RabbitEntity;moreCarrotTicks:I"),
+//			at = @At(value = "FIELD", target = "Lnet/minecraft/entity/passive/RabbitEntity$EatCarrotCropGoal;hasTarget:Z"),
+//			at = @At(value = "FIELD", target = "Lnet/minecraft/entity/ai/goal/MoveToTargetPosGoal;cooldown:I"),
 			locals = LocalCapture.PRINT
 	)
-
 	public void bunnyloversmc$tick(CallbackInfo ci) {
-		// Need to access outer class from inner class.
-		if (!rabbit.world.isClient && rabbit.isAlive() && !rabbit.isBaby() && --this.berryDropTime <= 0) {
-//			rabbit.playSound(SoundEvents.ENTITY_CHICKEN_EGG, 1.0F, (rabbit.random.nextFloat() - rabbit.random.nextFloat()) * 0.2F + 1.0F);
-			rabbit.playSound(SoundEvents.ENTITY_CHICKEN_EGG, 1.0F, 0.2F + 1.0F);
-			rabbit.dropItem(BunnyItems.BUNNY_BERRIES);
-		}
+		World world = this.rabbit.world;
+		BlockPos blockPos = this.targetPos.up();
+		BlockState blockState = world.getBlockState(blockPos);
+		Block block = blockState.getBlock();
+		Integer integer = (Integer)blockState.get(CarrotsBlock.AGE);
+		rabbit.playSound(SoundEvents.ENTITY_CHICKEN_EGG, 1.0F, 0.2F + 1.0F);
+		rabbit.dropItem(BunnyItems.BUNNY_BERRIES);
 	}
 }
 
