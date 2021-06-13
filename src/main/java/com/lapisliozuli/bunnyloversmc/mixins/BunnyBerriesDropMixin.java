@@ -4,7 +4,6 @@ import com.lapisliozuli.bunnyloversmc.items.BunnyItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.passive.RabbitEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -17,12 +16,14 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
+import java.util.Random;
+
 @Mixin(targets = "net.minecraft.entity.passive.RabbitEntity$EatCarrotCropGoal")
 public class BunnyBerriesDropMixin {
 	@Shadow
 	@Final
 	private RabbitEntity rabbit;
-	// Fullness should reduce the frequency at which Rabbits poop.
+	// Fullness should reduce the frequency at which Rabbits poop. (Should I just set to 1 throughout?)
 	int fullness = 0;
 
 
@@ -38,12 +39,18 @@ public class BunnyBerriesDropMixin {
 		}
 		else {
 			// Current ratio of Bunny Berries to Carrots is 1:1.
-			rabbit.playSound(SoundEvents.ENTITY_CHICKEN_EGG, 1.0F, 0.2F + 1.0F);
+			Random random = rabbit.getRandom();
+			rabbit.playSound(SoundEvents.ENTITY_CHICKEN_EGG, 1.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
 			// Drops a few Bunny Berries in an ItemStack instead of a single Item.
 			// Fullness + 1 because people count from 1 but computers count from 0.
-			rabbit.dropStack(new ItemStack(BunnyItems.BUNNY_BERRIES, fullness + 1));
+//			rabbit.dropStack(new ItemStack(BunnyItems.BUNNY_BERRIES, fullness + 1));
+			// Drops a random number of Bunny Berries ranging from 1-4. Can tweak constant and random components.
+			int excretionCount = 1 + random.nextInt(fullness + 1);
+			rabbit.dropStack(new ItemStack(BunnyItems.BUNNY_BERRIES, excretionCount));
 			// Resets fullness.
 			fullness = 0;
+//			// Fullness decreases by a variable amount.
+//			fullness -= excretionCount;
 		}
 	}
 }

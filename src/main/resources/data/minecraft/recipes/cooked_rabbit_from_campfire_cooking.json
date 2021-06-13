@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:campfire_cooking",
+  "ingredient": {
+    "item": "bunnyloversmc:imitation_rabbit_meat"
+  },
+  "result": "bunnyloversmc:cooked_imitation_rabbit_meat",
+  "experience": 0.35,
+  "cookingtime": 600
+}
