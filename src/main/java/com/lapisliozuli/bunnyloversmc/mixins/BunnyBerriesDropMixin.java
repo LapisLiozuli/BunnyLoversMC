@@ -22,7 +22,7 @@ public class BunnyBerriesDropMixin {
 	@Shadow
 	@Final
 	private RabbitEntity rabbit;
-	// Fullness should reduce the rate at which Rabbits poop.
+	// Fullness should reduce the frequency at which Rabbits poop.
 	int fullness = 0;
 
 
@@ -37,13 +37,12 @@ public class BunnyBerriesDropMixin {
 			fullness += 1;
 		}
 		else {
+			// Current ratio of Bunny Berries to Carrots is 1:1.
 			rabbit.playSound(SoundEvents.ENTITY_CHICKEN_EGG, 1.0F, 0.2F + 1.0F);
-//			rabbit.dropItem(BunnyItems.BUNNY_BERRIES);
-//			rabbit.dropStack(new ItemStack(BunnyItems.BUNNY_BERRIES, fullness));
-			for (Integer i = 0; i <= fullness; i++ ) {
-				rabbit.dropItem(BunnyItems.BUNNY_BERRIES);
-			}
-
+			// Drops a few Bunny Berries in an ItemStack instead of a single Item.
+			// Fullness + 1 because people count from 1 but computers count from 0.
+			rabbit.dropStack(new ItemStack(BunnyItems.BUNNY_BERRIES, fullness + 1));
+			// Resets fullness.
 			fullness = 0;
 		}
 	}
