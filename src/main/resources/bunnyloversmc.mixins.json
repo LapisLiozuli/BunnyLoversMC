@@ -6,7 +6,8 @@
   "mixins": [
     "NoFallDamageMixin",
     "BunnyBerriesDropMixin",
-    "FoxSpareRabbitMixin"
+    "FoxSpareRabbitMixin",
+    "NewLeapingPotionMixin"
   ],
   "client": [
   ],

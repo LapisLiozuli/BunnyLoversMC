@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/crop",
+  "textures": {
+    "crop": "bunnyloversmc:block/bunny_succulent_stage2"
+  }
+}
