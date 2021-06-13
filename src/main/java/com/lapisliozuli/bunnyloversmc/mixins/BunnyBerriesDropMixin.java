@@ -4,6 +4,8 @@ import com.lapisliozuli.bunnyloversmc.items.BunnyItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.passive.RabbitEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -20,6 +22,8 @@ public class BunnyBerriesDropMixin {
 	@Shadow
 	@Final
 	private RabbitEntity rabbit;
+	// Fullness should reduce the rate at which Rabbits poop.
+	int fullness = 0;
 
 
 	@Inject(
@@ -28,7 +32,19 @@ public class BunnyBerriesDropMixin {
 			locals = LocalCapture.CAPTURE_FAILSOFT
 	)
 	public void bunnyloversmc$tick(CallbackInfo ci, World world, BlockPos blockPos, BlockState blockState, Block block, Integer integer) {
-		rabbit.playSound(SoundEvents.ENTITY_CHICKEN_EGG, 1.0F, 0.2F + 1.0F);
-		rabbit.dropItem(BunnyItems.BUNNY_BERRIES);
+		// This determines the amount of fullness.
+		if (fullness < 3) {
+			fullness += 1;
+		}
+		else {
+			rabbit.playSound(SoundEvents.ENTITY_CHICKEN_EGG, 1.0F, 0.2F + 1.0F);
+//			rabbit.dropItem(BunnyItems.BUNNY_BERRIES);
+//			rabbit.dropStack(new ItemStack(BunnyItems.BUNNY_BERRIES, fullness));
+			for (Integer i = 0; i <= fullness; i++ ) {
+				rabbit.dropItem(BunnyItems.BUNNY_BERRIES);
+			}
+
+			fullness = 0;
+		}
 	}
 }
