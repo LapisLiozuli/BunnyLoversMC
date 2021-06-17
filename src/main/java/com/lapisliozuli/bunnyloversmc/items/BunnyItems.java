@@ -14,6 +14,7 @@ public class BunnyItems {
     public static final Item LEATHER_STRIP = new Item(new Item.Settings().group(BunnyLovers.BUNNYLOVERSMC));
     // Monilaria obconica / M. moniliformis
     public static final Item BUNNY_SUCCULENT = new Item(new Item.Settings().group(BunnyLovers.BUNNYLOVERSMC));
+    // I have an amazing idea. Make Imitation Rabbit Meat from Carrots and Eggs. Double rabbit reference, and it naturally resolves texturing issues.
     public static final Item IMITATION_RABBIT_MEAT = new Item(new Item.Settings().group(BunnyLovers.BUNNYLOVERSMC).food(FoodComponents.RABBIT));
     public static final Item COOKED_IMITATION_RABBIT_MEAT = new Item(new Item.Settings().group(BunnyLovers.BUNNYLOVERSMC).food(FoodComponents.COOKED_RABBIT));
     public static final Item EASTER_BUNNY_EGG = new Item(new Item.Settings().group(BunnyLovers.BUNNYLOVERSMC));
