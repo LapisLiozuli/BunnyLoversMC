@@ -1,21 +1,16 @@
 {
   "schemaVersion": 1,
   "id": "bunnyloversmc",
-  "version": "0.1.0+1.16.5",
-
+  "version": "${version}",
   "name": "Bunny Lovers MC",
   "description": "This mod aims to make rabbits a bit safer from harm, farming and exploitation.",
-  "authors": [
-    "LapisLiozuli"
-  ],
+  "authors": ["LapisLiozuli"],
   "contact": {
     "homepage": "",
     "sources": "https://github.com/LapisLiozuli/BunnyLoversMC"
   },
-
   "license": "MIT",
-  "icon": "*",
-
+  "icon": "assets/bunnyloversmc/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
@@ -28,12 +23,10 @@
   "mixins": [
     "bunnyloversmc.mixins.json"
   ],
-
+  "accessWidener": "bunnyloversmc.accesswidener",
   "depends": {
     "fabricloader": "*",
     "fabric": "*",
     "minecraft": "*"
-  },
-  "suggests": {
   }
 }
