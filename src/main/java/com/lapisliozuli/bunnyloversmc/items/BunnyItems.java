@@ -9,14 +9,11 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class BunnyItems {
-    public static final Item BUNNY_BERRIES = new BoneMealItem(new FabricItemSettings().group(BunnyLovers.BUNNYLOVERSMC));
-//    public class BunnyBerryItem extends BoneMealItem{
-//    }
+    public static final Item BUNNY_BERRIES = new BunnyBerries(new FabricItemSettings().group(BunnyLovers.BUNNYLOVERSMC));
     public static final Item TANNED_LEATHER = new Item(new FabricItemSettings().group(BunnyLovers.BUNNYLOVERSMC));
     public static final Item LEATHER_STRIP = new Item(new FabricItemSettings().group(BunnyLovers.BUNNYLOVERSMC));
     // Monilaria obconica / M. moniliformis
-//    public static final Item BUNNY_SUCCULENT = new Item(new Item.Settings().group(BunnyLovers.BUNNYLOVERSMC));
-    public static final Item BUNNY_SUCCULENT = new BoneMealItem(new FabricItemSettings().group(BunnyLovers.BUNNYLOVERSMC));
+    public static final Item BUNNY_SUCCULENT = new Item(new FabricItemSettings().group(BunnyLovers.BUNNYLOVERSMC));
     // I have an amazing idea. Make Imitation Rabbit Meat from Carrots and Eggs. Double rabbit reference, and it naturally resolves texturing issues.
     public static final Item IMITATION_RABBIT_MEAT = new Item(new FabricItemSettings().group(BunnyLovers.BUNNYLOVERSMC).food(FoodComponents.RABBIT));
     public static final Item COOKED_IMITATION_RABBIT_MEAT = new Item(new FabricItemSettings().group(BunnyLovers.BUNNYLOVERSMC).food(FoodComponents.COOKED_RABBIT));
