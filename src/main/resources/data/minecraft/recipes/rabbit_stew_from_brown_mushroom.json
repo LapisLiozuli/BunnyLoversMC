@@ -3,19 +3,10 @@
   "group": "rabbit_stew",
   "ingredients": [
     {
-      "item": "minecraft:baked_potato"
+      "item": "minecraft:bedrock"
     },
     {
-      "item": "bunnyloversmc:cooked_imitation_rabbit_meat"
-    },
-    {
-      "item": "minecraft:bowl"
-    },
-    {
-      "item": "minecraft:carrot"
-    },
-    {
-      "item": "minecraft:brown_mushroom"
+      "item": "minecraft:fire"
     }
   ],
   "result": {

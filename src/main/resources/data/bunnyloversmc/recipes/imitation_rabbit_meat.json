@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:carrot"
+    },
+    {
+      "item": "minecraft:egg"
+    },
+    {
+      "item": "bunnyloversmc:bunny_succulent"
+    }
+  ],
+  "result": {
+    "item": "bunnyloversmc:imitation_rabbit_meat",
+    "count": 2
+  }
+}
