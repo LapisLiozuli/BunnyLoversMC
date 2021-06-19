@@ -1,24 +1,27 @@
 package com.lapisliozuli.bunnyloversmc.items;
 
 import com.lapisliozuli.bunnyloversmc.BunnyLovers;
+import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.minecraft.item.BoneMealItem;
 import net.minecraft.item.FoodComponents;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class BunnyItems {
-    public static final Item BUNNY_BERRIES = new Item(new Item.Settings().group(BunnyLovers.BUNNYLOVERSMC));
+    public static final Item BUNNY_BERRIES = new BoneMealItem(new FabricItemSettings().group(BunnyLovers.BUNNYLOVERSMC));
 //    public class BunnyBerryItem extends BoneMealItem{
 //    }
-    public static final Item TANNED_LEATHER = new Item(new Item.Settings().group(BunnyLovers.BUNNYLOVERSMC));
-    public static final Item LEATHER_STRIP = new Item(new Item.Settings().group(BunnyLovers.BUNNYLOVERSMC));
+    public static final Item TANNED_LEATHER = new Item(new FabricItemSettings().group(BunnyLovers.BUNNYLOVERSMC));
+    public static final Item LEATHER_STRIP = new Item(new FabricItemSettings().group(BunnyLovers.BUNNYLOVERSMC));
     // Monilaria obconica / M. moniliformis
-    public static final Item BUNNY_SUCCULENT = new Item(new Item.Settings().group(BunnyLovers.BUNNYLOVERSMC));
+//    public static final Item BUNNY_SUCCULENT = new Item(new Item.Settings().group(BunnyLovers.BUNNYLOVERSMC));
+    public static final Item BUNNY_SUCCULENT = new BoneMealItem(new FabricItemSettings().group(BunnyLovers.BUNNYLOVERSMC));
     // I have an amazing idea. Make Imitation Rabbit Meat from Carrots and Eggs. Double rabbit reference, and it naturally resolves texturing issues.
-    public static final Item IMITATION_RABBIT_MEAT = new Item(new Item.Settings().group(BunnyLovers.BUNNYLOVERSMC).food(FoodComponents.RABBIT));
-    public static final Item COOKED_IMITATION_RABBIT_MEAT = new Item(new Item.Settings().group(BunnyLovers.BUNNYLOVERSMC).food(FoodComponents.COOKED_RABBIT));
-    public static final Item IMITATION_RABBIT_STEW = new Item(new Item.Settings().group(BunnyLovers.BUNNYLOVERSMC).food(FoodComponents.RABBIT_STEW));
-    public static final Item EASTER_BUNNY_EGG = new Item(new Item.Settings().group(BunnyLovers.BUNNYLOVERSMC));
+    public static final Item IMITATION_RABBIT_MEAT = new Item(new FabricItemSettings().group(BunnyLovers.BUNNYLOVERSMC).food(FoodComponents.RABBIT));
+    public static final Item COOKED_IMITATION_RABBIT_MEAT = new Item(new FabricItemSettings().group(BunnyLovers.BUNNYLOVERSMC).food(FoodComponents.COOKED_RABBIT));
+    public static final Item IMITATION_RABBIT_STEW = new Item(new FabricItemSettings().group(BunnyLovers.BUNNYLOVERSMC).food(FoodComponents.RABBIT_STEW));
+    public static final Item EASTER_BUNNY_EGG = new Item(new FabricItemSettings().group(BunnyLovers.BUNNYLOVERSMC));
 
 
     public static void registerBunnyItems() {

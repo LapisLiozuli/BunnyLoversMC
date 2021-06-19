@@ -1,11 +1,9 @@
 package com.lapisliozuli.bunnyloversmc;
 
-import com.google.common.collect.ImmutableMap;
 import com.lapisliozuli.bunnyloversmc.blocks.BunnySucculentBlock;
 import com.lapisliozuli.bunnyloversmc.items.BunnyItems;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
-import net.fabricmc.fabric.api.object.builder.v1.trade.TradeOfferHelper;
 import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemGroup;
@@ -14,13 +12,6 @@ import net.minecraft.item.Items;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.village.TradeOffer;
-import net.minecraft.village.TradeOffers;
-import net.minecraft.village.VillagerProfession;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
-import java.util.Random;
 
 public class BunnyLovers implements ModInitializer {
 	public static final String MOD_ID = "bunnyloversmc";

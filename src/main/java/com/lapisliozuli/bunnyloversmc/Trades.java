@@ -12,23 +12,6 @@ import net.minecraft.village.TradeOffers;
 import net.minecraft.village.VillagerProfession;
 
 public class Trades {
-//    map.put(VillagerProfession.BUTCHER, copyToFastUtilMap(ImmutableMap.of(1,
-//        new TradeOffers.Factory[]{
-//              new TradeOffers.BuyForOneEmeraldFactory(Items.CHICKEN, 14, 16, 2),
-//              new TradeOffers.BuyForOneEmeraldFactory(Items.PORKCHOP, 7, 16, 2),
-//              new TradeOffers.BuyForOneEmeraldFactory(Items.RABBIT, 4, 16, 2),
-//              new TradeOffers.SellItemFactory(Items.RABBIT_STEW, 1, 1, 1)}, 2,
-//        new TradeOffers.Factory[]{
-//            new TradeOffers.BuyForOneEmeraldFactory(Items.COAL, 15, 16, 2),
-//            new TradeOffers.SellItemFactory(Items.COOKED_PORKCHOP, 1, 5, 16, 5),
-//            new TradeOffers.SellItemFactory(Items.COOKED_CHICKEN, 1, 8, 16, 5)}, 3,
-//        new TradeOffers.Factory[]{
-//            new TradeOffers.BuyForOneEmeraldFactory(Items.MUTTON, 7, 16, 20),
-//            new TradeOffers.BuyForOneEmeraldFactory(Items.BEEF, 10, 16, 20)}, 4,
-//        new TradeOffers.Factory[]{
-//            new TradeOffers.BuyForOneEmeraldFactory(Items.DRIED_KELP_BLOCK, 10, 12, 30)}, 5,
-//        new TradeOffers.Factory[]{
-//            new TradeOffers.BuyForOneEmeraldFactory(Items.SWEET_BERRIES, 10, 12, 30)})));
     private static Int2ObjectMap<TradeOffers.Factory[]> mapLevelToTrades(ImmutableMap<Integer, TradeOffers.Factory[]> trades) {
         return new Int2ObjectOpenHashMap(trades);
     }
