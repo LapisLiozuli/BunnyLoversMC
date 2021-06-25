@@ -31,52 +31,74 @@ public class BunnyBerries extends Item {
         super(settings);
     }
 
+//    // Able to grow Grass and Flowers, but without particles or item animation. It also crashes sometimes.
+//    public ActionResult useOnBlock(ItemUsageContext context) {
+////        BlockPos blockPos = pos.up();
+//        World world = context.getWorld();
+//        BlockPos blockPos = context.getBlockPos();
+//        Block selfBlock = world.getBlockState(blockPos).getBlock();
+////        Random random;
+//        Random random = world.getRandom();
+//        BlockState blockState = Blocks.GRASS.getDefaultState();
+//
+//        // What on earth is this label48?
+//        label48:
+//        for(int i = 0; i < 128; ++i) {
+//            BlockPos blockPos2 = blockPos;
+//
+//            for(int j = 0; j < i / 16; ++j) {
+//                blockPos2 = blockPos2.add(random.nextInt(3) - 1, (random.nextInt(3) - 1) * random.nextInt(3) / 2, random.nextInt(3) - 1);
+//                if (!world.getBlockState(blockPos2.down()).isOf(selfBlock) || world.getBlockState(blockPos2).isFullCube(world, blockPos2)) {
+//                    continue label48;
+//                }
+//            }
+//
+//            BlockState blockState2 = world.getBlockState(blockPos2);
+//            if (blockState2.isOf(blockState.getBlock()) && random.nextInt(10) == 0) {
+//                ((Fertilizable)blockState.getBlock()).grow((ServerWorld) world, random, blockPos2, blockState2);
+//                world.syncWorldEvent(2005, blockPos2, 0);
+//            }
+//
+//            if (blockState2.isAir()) {
+//                BlockState blockState4;
+//                if (random.nextInt(8) == 0) {
+//                    List<ConfiguredFeature<?, ?>> list = world.getBiome(blockPos2).getGenerationSettings().getFlowerFeatures();
+//                    if (list.isEmpty()) {
+//                        continue;
+//                    }
+//
+//                    ConfiguredFeature<?, ?> configuredFeature = (ConfiguredFeature)list.get(0);
+//                    FlowerFeature flowerFeature = (FlowerFeature)configuredFeature.feature;
+//                    blockState4 = flowerFeature.getFlowerState(random, blockPos2, configuredFeature.getConfig());
+//                    world.syncWorldEvent(2005, blockPos2, 0);
+//                } else {
+//                    blockState4 = blockState;
+//                }
+//
+//                if (blockState4.canPlaceAt(world, blockPos2)) {
+//                    world.setBlockState(blockPos2, blockState4, 3);
+//                }
+//            }
+//        }
+//        return ActionResult.PASS;
+//    }
+
+
     public ActionResult useOnBlock(ItemUsageContext context) {
-//        BlockPos blockPos = pos.up();
         World world = context.getWorld();
         BlockPos blockPos = context.getBlockPos();
-        Block selfBlock = world.getBlockState(blockPos).getBlock();
-//        Random random;
-        Random random = world.getRandom();
-        BlockState blockState = Blocks.GRASS.getDefaultState();
-
-        label48:
-        for(int i = 0; i < 128; ++i) {
-            BlockPos blockPos2 = blockPos;
-
-            for(int j = 0; j < i / 16; ++j) {
-                blockPos2 = blockPos2.add(random.nextInt(3) - 1, (random.nextInt(3) - 1) * random.nextInt(3) / 2, random.nextInt(3) - 1);
-                if (!world.getBlockState(blockPos2.down()).isOf(selfBlock) || world.getBlockState(blockPos2).isFullCube(world, blockPos2)) {
-                    continue label48;
-                }
-            }
-
-            BlockState blockState2 = world.getBlockState(blockPos2);
-            if (blockState2.isOf(blockState.getBlock()) && random.nextInt(10) == 0) {
-                ((Fertilizable)blockState.getBlock()).grow((ServerWorld) world, random, blockPos2, blockState2);
-            }
-
-            if (blockState2.isAir()) {
-                BlockState blockState4;
-                if (random.nextInt(8) == 0) {
-                    List<ConfiguredFeature<?, ?>> list = world.getBiome(blockPos2).getGenerationSettings().getFlowerFeatures();
-                    if (list.isEmpty()) {
-                        continue;
-                    }
-
-                    ConfiguredFeature<?, ?> configuredFeature = (ConfiguredFeature)list.get(0);
-                    FlowerFeature flowerFeature = (FlowerFeature)configuredFeature.feature;
-                    blockState4 = flowerFeature.getFlowerState(random, blockPos2, configuredFeature.getConfig());
-                } else {
-                    blockState4 = blockState;
-                }
-
-                if (blockState4.canPlaceAt(world, blockPos2)) {
-                    world.setBlockState(blockPos2, blockState4, 3);
-                }
+        BlockPos blockPos2 = blockPos.offset(context.getSide());
+        if (useOnFertilizable(context.getStack(), world, blockPos)) {
+            return ActionResult.FAIL;
+        } else {
+            BlockState blockState = world.getBlockState(blockPos);
+            boolean bl = blockState.isSideSolidFullSquare(world, blockPos, context.getSide());
+            if (bl && useOnGround(context.getStack(), world, blockPos2, context.getSide())) {
+                return ActionResult.FAIL;
+            } else {
+                return ActionResult.FAIL;
             }
         }
-        return ActionResult.PASS;
     }
 
 //    public ActionResult useOnBlock(ItemUsageContext context) {
@@ -85,9 +107,10 @@ public class BunnyBerries extends Item {
 //        BlockPos blockPos2 = blockPos.offset(context.getSide());
 //        if (useOnFertilizable(context.getStack(), world, blockPos)) {
 //            if (!world.isClient) {
+//                // Spawns particles.
 //                world.syncWorldEvent(2005, blockPos, 0);
 //            }
-//
+////            // This affect item usage animation.
 //            return ActionResult.success(world.isClient);
 //        } else {
 //            BlockState blockState = world.getBlockState(blockPos);
@@ -96,7 +119,6 @@ public class BunnyBerries extends Item {
 //                if (!world.isClient) {
 //                    world.syncWorldEvent(2005, blockPos2, 0);
 //                }
-//
 //                return ActionResult.success(world.isClient);
 //            } else {
 //                return ActionResult.PASS;
@@ -174,43 +196,4 @@ public class BunnyBerries extends Item {
         }
     }
 
-    @Environment(EnvType.CLIENT)
-    public static void createParticles(WorldAccess world, BlockPos pos, int count) {
-        if (count == 0) {
-            count = 15;
-        }
-
-        BlockState blockState = world.getBlockState(pos);
-        if (!blockState.isAir()) {
-            double d = 0.5D;
-            double g;
-            if (blockState.isOf(Blocks.WATER)) {
-                count *= 3;
-                g = 1.0D;
-                d = 3.0D;
-            } else if (blockState.isOpaqueFullCube(world, pos)) {
-                pos = pos.up();
-                count *= 3;
-                d = 3.0D;
-                g = 1.0D;
-            } else {
-                g = blockState.getOutlineShape(world, pos).getMax(Direction.Axis.Y);
-            }
-
-            world.addParticle(ParticleTypes.HAPPY_VILLAGER, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-
-            for(int i = 0; i < count; ++i) {
-                double h = RANDOM.nextGaussian() * 0.02D;
-                double j = RANDOM.nextGaussian() * 0.02D;
-                double k = RANDOM.nextGaussian() * 0.02D;
-                double l = 0.5D - d;
-                double m = (double)pos.getX() + l + RANDOM.nextDouble() * d * 2.0D;
-                double n = (double)pos.getY() + RANDOM.nextDouble() * g;
-                double o = (double)pos.getZ() + l + RANDOM.nextDouble() * d * 2.0D;
-                if (!world.getBlockState((new BlockPos(m, n, o)).down()).isAir()) {
-                    world.addParticle(ParticleTypes.HAPPY_VILLAGER, m, n, o, h, j, k);
-                }
-            }
-        }
-    }
 }

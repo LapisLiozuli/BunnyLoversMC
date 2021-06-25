@@ -19,14 +19,15 @@ public class BunnyLovers implements ModInitializer {
 			new Identifier(MOD_ID, "bunnyloversmc"))
 			.icon(() -> new ItemStack(Items.CARROT))
 			.build();
-//	public static Block BUNNY_SUCCULENT_BLOCK;
+	public static BunnySucculentBlock BUNNY_SUCCULENT_BLOCK;
 
 	@Override
 	public void onInitialize() {
-		BunnyItems.registerBunnyItems();
-		Registry.register(Registry.BLOCK,
+		BUNNY_SUCCULENT_BLOCK = Registry.register(Registry.BLOCK,
+//		Registry.register(Registry.BLOCK,
 				new Identifier(MOD_ID, "bunny_succulent"),
 				new BunnySucculentBlock(AbstractBlock.Settings.of(Material.PLANT).noCollision().ticksRandomly().breakInstantly().sounds(BlockSoundGroup.CROP)));
+		BunnyItems.registerBunnyItems();
 		Trades.addBunnyFriendlyTrades();
 //		CARROTS = register("carrots", new CarrotsBlock(AbstractBlock.Settings.of(Material.PLANT).noCollision().ticksRandomly().breakInstantly().sounds(BlockSoundGroup.CROP)));
 	}
