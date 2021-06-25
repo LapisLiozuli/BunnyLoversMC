@@ -3,8 +3,10 @@ package com.lapisliozuli.bunnyloversmc;
 import com.lapisliozuli.bunnyloversmc.blocks.BunnySucculentBlock;
 import com.lapisliozuli.bunnyloversmc.items.BunnyItems;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.minecraft.block.*;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -19,14 +21,17 @@ public class BunnyLovers implements ModInitializer {
 			new Identifier(MOD_ID, "bunnyloversmc"))
 			.icon(() -> new ItemStack(Items.CARROT))
 			.build();
-	public static BunnySucculentBlock BUNNY_SUCCULENT_BLOCK;
+	public static BunnySucculentBlock BUNNY_SUCCULENT_BLOCK = new BunnySucculentBlock(AbstractBlock.Settings.of(Material.PLANT)
+			.noCollision().ticksRandomly().breakInstantly().sounds(BlockSoundGroup.CROP));
 
 	@Override
 	public void onInitialize() {
-		BUNNY_SUCCULENT_BLOCK = Registry.register(Registry.BLOCK,
-//		Registry.register(Registry.BLOCK,
+		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutout(), BUNNY_SUCCULENT_BLOCK);
+//		BUNNY_SUCCULENT_BLOCK = Registry.register(Registry.BLOCK,
+		Registry.register(Registry.BLOCK,
 				new Identifier(MOD_ID, "bunny_succulent"),
-				new BunnySucculentBlock(AbstractBlock.Settings.of(Material.PLANT).noCollision().ticksRandomly().breakInstantly().sounds(BlockSoundGroup.CROP)));
+				BUNNY_SUCCULENT_BLOCK);
+//				new BunnySucculentBlock(AbstractBlock.Settings.of(Material.PLANT).noCollision().ticksRandomly().breakInstantly().sounds(BlockSoundGroup.CROP)));
 		BunnyItems.registerBunnyItems();
 		Trades.addBunnyFriendlyTrades();
 //		CARROTS = register("carrots", new CarrotsBlock(AbstractBlock.Settings.of(Material.PLANT).noCollision().ticksRandomly().breakInstantly().sounds(BlockSoundGroup.CROP)));
