@@ -84,47 +84,41 @@ public class BunnyBerries extends Item {
 //    }
 
 
-    public ActionResult useOnBlock(ItemUsageContext context) {
-        World world = context.getWorld();
-        BlockPos blockPos = context.getBlockPos();
-        BlockPos blockPos2 = blockPos.offset(context.getSide());
-        if (useOnFertilizable(context.getStack(), world, blockPos)) {
-            return ActionResult.FAIL;
-        } else {
-            BlockState blockState = world.getBlockState(blockPos);
-            boolean bl = blockState.isSideSolidFullSquare(world, blockPos, context.getSide());
-            if (bl && useOnGround(context.getStack(), world, blockPos2, context.getSide())) {
-                return ActionResult.FAIL;
-            } else {
-                return ActionResult.FAIL;
-            }
-        }
-    }
-
 //    public ActionResult useOnBlock(ItemUsageContext context) {
 //        World world = context.getWorld();
 //        BlockPos blockPos = context.getBlockPos();
 //        BlockPos blockPos2 = blockPos.offset(context.getSide());
 //        if (useOnFertilizable(context.getStack(), world, blockPos)) {
-//            if (!world.isClient) {
-//                // Spawns particles.
-//                world.syncWorldEvent(2005, blockPos, 0);
-//            }
-////            // This affect item usage animation.
-//            return ActionResult.success(world.isClient);
+//            return ActionResult.FAIL;
 //        } else {
-//            BlockState blockState = world.getBlockState(blockPos);
-//            boolean bl = blockState.isSideSolidFullSquare(world, blockPos, context.getSide());
-//            if (bl && useOnGround(context.getStack(), world, blockPos2, context.getSide())) {
-//                if (!world.isClient) {
-//                    world.syncWorldEvent(2005, blockPos2, 0);
-//                }
-//                return ActionResult.success(world.isClient);
-//            } else {
-//                return ActionResult.PASS;
-//            }
+//            return ActionResult.FAIL;
 //        }
 //    }
+
+    public ActionResult useOnBlock(ItemUsageContext context) {
+        World world = context.getWorld();
+        BlockPos blockPos = context.getBlockPos();
+        BlockPos blockPos2 = blockPos.offset(context.getSide());
+        if (useOnFertilizable(context.getStack(), world, blockPos)) {
+            if (!world.isClient) {
+                // Spawns particles.
+                world.syncWorldEvent(2005, blockPos, 0);
+            }
+//            // This affect item usage animation.
+            return ActionResult.success(world.isClient);
+        } else {
+            BlockState blockState = world.getBlockState(blockPos);
+            boolean bl = blockState.isSideSolidFullSquare(world, blockPos, context.getSide());
+            if (bl && useOnGround(context.getStack(), world, blockPos2, context.getSide())) {
+                if (!world.isClient) {
+                    world.syncWorldEvent(2005, blockPos2, 0);
+                }
+                return ActionResult.success(world.isClient);
+            } else {
+                return ActionResult.PASS;
+            }
+        }
+    }
 
     public static boolean useOnFertilizable(ItemStack stack, World world, BlockPos pos) {
         BlockState blockState = world.getBlockState(pos);
