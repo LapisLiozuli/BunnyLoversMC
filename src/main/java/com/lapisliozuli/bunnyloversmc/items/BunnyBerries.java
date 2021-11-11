@@ -1,5 +1,6 @@
 package com.lapisliozuli.bunnyloversmc.items;
 
+import com.lapisliozuli.bunnyloversmc.blocks.BunnySucculentBlock;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.*;
@@ -32,61 +33,78 @@ public class BunnyBerries extends Item {
     }
 
     // Able to grow Grass and Flowers, but without particles or item animation. It also crashes sometimes.
+    // Crash only occurs with the old Fertilisable code.
+    // But the fertilising works with non-Grass blocks too, even mature crops.
+    // This might be overwritten by GrassBlock.grow().
     public ActionResult useOnBlock(ItemUsageContext context) {
 //        BlockPos blockPos = pos.up();
         World world = context.getWorld();
         BlockPos blockPos = context.getBlockPos();
+        // Removes crop growing. All unintended behaviour remains.
+//        BlockPos blockPos = context.getBlockPos().up();
         Block selfBlock = world.getBlockState(blockPos).getBlock();
 //        Random random;
         Random random = world.getRandom();
         BlockState blockState = Blocks.GRASS.getDefaultState();
 
         for(int i = 0; i < 128; ++i) {
-            BlockPos blockPos2 = blockPos;
+            BlockPos blockPosAdjacent = blockPos;
 
             for(int j = 0; j < i / 16; ++j) {
-                blockPos2 = blockPos2.add(random.nextInt(3) - 1, (random.nextInt(3) - 1) * random.nextInt(3) / 2, random.nextInt(3) - 1);
-                if (!world.getBlockState(blockPos2.down()).isOf(selfBlock) || world.getBlockState(blockPos2).isFullCube(world, blockPos2)) {
+                // Each feature grows at a random position within a horizontal range of 2 blocks and vertical range of 2 blocks from the centre. (WIP)
+                blockPosAdjacent = blockPosAdjacent.add(random.nextInt(3) - 1, (random.nextInt(3) - 1) * random.nextInt(3) / 2, random.nextInt(3) - 1);
+                if (!world.getBlockState(blockPosAdjacent.down()).isOf(selfBlock) || world.getBlockState(blockPosAdjacent).isFullCube(world, blockPosAdjacent)) {
                     continue;
                 }
             }
 
 //            // Fertilises crops.
-            BlockState blockState2 = world.getBlockState(blockPos2);
-//            if (blockState2.isOf(blockState.getBlock()) && random.nextInt(10) == 0) {
-//                ((Fertilizable)blockState.getBlock()).grow((ServerWorld) world, random, blockPos2, blockState2);
-//                world.syncWorldEvent(2005, blockPos2, 0);
+            BlockState blockStateAdjacent = world.getBlockState(blockPosAdjacent);
+//            if (blockStateAdjacent.isOf(blockState.getBlock()) && random.nextInt(10) == 0) {
+//                ((Fertilizable)blockState.getBlock()).grow((ServerWorld) world, random, blockPosAdjacent, blockStateAdjacent);
+//                world.syncWorldEvent(2005, blockPosAdjacent, 0);
 //            }
-            if (useOnFertilizable(context.getStack(), world, blockPos)) {
-                if (!world.isClient) {
-                    // Spawns particles.
-                    world.syncWorldEvent(2005, blockPos, 0);
-                }
-//            // This affect item usage animation.
-                return ActionResult.success(world.isClient);
-            }
 
-            if (blockState2.isAir()) {
+//            if (useOnFertilizable(context.getStack(), world, blockPos)) {
+//                if (!world.isClient) {
+//                    // Spawns particles.
+//                    world.syncWorldEvent(2005, blockPos, 0);
+//                }
+////            // This affect item usage animation.
+//                return ActionResult.success(world.isClient);
+//            }
+
+            // This grows Flowers and Grass.
+            if (blockStateAdjacent.isAir()) {
                 BlockState blockState4;
                 if (random.nextInt(8) == 0) {
-                    List<ConfiguredFeature<?, ?>> list = world.getBiome(blockPos2).getGenerationSettings().getFlowerFeatures();
+                    List<ConfiguredFeature<?, ?>> list = world.getBiome(blockPosAdjacent).getGenerationSettings().getFlowerFeatures();
                     if (list.isEmpty()) {
                         continue;
                     }
 
-                    ConfiguredFeature<?, ?> configuredFeature = (ConfiguredFeature)list.get(0);
-                    FlowerFeature flowerFeature = (FlowerFeature)configuredFeature.feature;
-                    blockState4 = flowerFeature.getFlowerState(random, blockPos2, configuredFeature.getConfig());
-                    world.syncWorldEvent(2005, blockPos2, 0);
+                    if (random.nextInt(1) == 0) {
+                        ConfiguredFeature<?, ?> configuredFeature = (ConfiguredFeature) list.get(0);
+                        FlowerFeature flowerFeature = (FlowerFeature) configuredFeature.feature;
+                        blockState4 = flowerFeature.getFlowerState(random, blockPosAdjacent, configuredFeature.getConfig());
+                    } else {
+//                        BlockState blockStateX = BunnySucculentBlock.get;
+                        System.out.println("Grow bunny succulent.");
+                        continue;
+                    }
+                    // Spawns particles.
+                    world.syncWorldEvent(2005, blockPosAdjacent, 0);
                 } else {
+                    // Runs for
                     blockState4 = blockState;
                 }
 
-                if (blockState4.canPlaceAt(world, blockPos2)) {
-                    world.setBlockState(blockPos2, blockState4, 3);
+                if (blockState4.canPlaceAt(world, blockPosAdjacent)) {
+                    world.setBlockState(blockPosAdjacent, blockState4, 3);
                 }
             }
         }
+        // Don't really know what this does but method errors without it.
         return ActionResult.PASS;
     }
 
